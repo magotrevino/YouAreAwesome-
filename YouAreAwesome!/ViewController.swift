@@ -11,6 +11,7 @@ import AVFoundation
 class ViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var playSoundSwitch: UISwitch!
     
     var imageNumber = -1
     var messageNumber = -1
@@ -38,7 +39,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func nonRepeatingRanding(originalNumer: Int, upperLimit: Int) -> Int {
+    func nonRepeatingRandom(originalNumer: Int, upperLimit: Int) -> Int {
         var newNumber: Int
         repeat {
             newNumber = Int.random(in: 0...upperLimit)
@@ -54,18 +55,27 @@ class ViewController: UIViewController {
                         "You've Got the Design Skill of Jony Ive!",
                         "Fabulous? That's You"]
         
-        messageNumber = nonRepeatingRanding(originalNumer: messageNumber, upperLimit: messages.count-1)
+        messageNumber = nonRepeatingRandom(originalNumer: messageNumber, upperLimit: messages.count-1)
         messageLabel.text = messages[messageNumber]
         
-
-        imageNumber = nonRepeatingRanding(originalNumer: imageNumber, upperLimit: messages.count-1)
+        
+        imageNumber = nonRepeatingRandom(originalNumer: imageNumber, upperLimit: messages.count-1)
         imageView.image = UIImage(named: "image\(imageNumber)")
         
-
-        soundNumber = nonRepeatingRanding(originalNumer: soundNumber, upperLimit: totalNumberOfSounds-1)
-        playSound(name: "sound\(soundNumber)")
         
-        
+        soundNumber = nonRepeatingRandom(originalNumer: soundNumber, upperLimit: totalNumberOfSounds-1)
+        if playSoundSwitch.isOn { //is playSoundSwitch is on}
+            playSound(name: "sound\(soundNumber)") //then play the sound
+            
+        }
     }
+        
+        @IBAction func playSoundToggle(_ sender: UISwitch) {
+            if !sender.isOn && audioPlayer != nil {
+                    audioPlayer.stop() //stop playing
+                }
+            }
+        }
+        
     
-}
+
